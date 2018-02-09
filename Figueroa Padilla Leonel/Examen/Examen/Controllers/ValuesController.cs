@@ -15,8 +15,8 @@ namespace Examen.Controllers
     {
         private examenEntities bd = new examenEntities();
 
-        // GET api/values
-        public HttpResponseMessage GetPersona()
+        [HttpGet]
+        public HttpResponseMessage GetPersonas()
         {
             try
             {
@@ -35,7 +35,25 @@ namespace Examen.Controllers
         }
 
         // GET api/values/5
+        [HttpGet]
+        [Route("GetPersona/{dni}")]
+        public HttpResponseMessage GetPersona(string dni)
+        {
+            try
+            {
+                var result = new HttpResponseMessage(HttpStatusCode.OK);
+                result.Content = new StringContent(JsonConvert.SerializeObject(
+                    bd.Persona.Single (p=> p.Dni == dni)));
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(
+                    "application/json");
+                return result;
+            }
+            catch
+            {
 
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+        }
         // POST api/values
         public void Post([FromBody]string value)
         {
