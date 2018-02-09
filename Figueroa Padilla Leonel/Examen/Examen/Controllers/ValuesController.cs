@@ -55,10 +55,21 @@ namespace Examen.Controllers
             }
         }
         // POST api/values
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public HttpResponseMessage Create(Persona persona)
         {
+            try
+            {
+                var result = new HttpResponseMessage(HttpStatusCode.OK);
+                bd.Persona.Add(persona);
+                bd.SaveChanges();
+                return result;
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
         }
-
         // PUT api/values/5
         public void Put(int id, [FromBody]string value)
         {
