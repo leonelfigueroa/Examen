@@ -94,8 +94,23 @@ namespace Examen.Controllers
         }
 
         // DELETE api/values/5
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("Delete/{dni}")]
+        public HttpResponseMessage Delete(string dni)
         {
+            try
+            {
+                var result = new HttpResponseMessage(HttpStatusCode.OK);
+                bd.Persona.Remove(bd.Persona.Single(p => p.Dni == dni));
+
+                bd.SaveChanges();
+                return result;
+            }
+            catch
+            {
+
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
         }
     }
 }
