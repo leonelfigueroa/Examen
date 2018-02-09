@@ -71,8 +71,26 @@ namespace Examen.Controllers
             }
         }
         // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public HttpResponseMessage Update(Persona persona)
         {
+            try
+            {
+                var result = new HttpResponseMessage(HttpStatusCode.OK);
+                var newPersona = bd.Persona.Single(p => p.Dni == persona.Dni);
+                newPersona.PrimerNom = persona.PrimerNom;
+                newPersona.SegundoNom = persona.SegundoNom;
+                newPersona.ApellidoPaterno = persona.ApellidoPaterno;
+                newPersona.ApellidoMaterno = persona.ApellidoMaterno;
+                newPersona.FechaNacimiento = persona.FechaNacimiento;
+
+                bd.SaveChanges();
+                return result;
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
         }
 
         // DELETE api/values/5
